@@ -1,6 +1,5 @@
 import time
 from random import randrange as rand
-from Type1Playbook import *
 from tkinter import *
 from tkinter import filedialog
 from tkinter import font as tkfont
@@ -10,12 +9,293 @@ import csv
 import glob
 import os
 import numpy as np
-from UATSelenium import *
 import string
 import secrets
-
+from ansible.modules.windows import win_user
+# from UATSelenium import *
+# from Type1Playbook import *
 # MAKE SURE TO HAVE PROXIFIER SET UP, WHERE YOUR PROFILES ARE NAMED AFTER YOUR CUSTOMER ENVIRONMENTS/DELIVERY TEAMS,
 # e.g. 'DELIVERY_TEAM-IAM.ppx', IN THE FOLLOWING DIRECTORY: ~/Library/Application Support/Proxifier/Profiles/{}.ppx'
+
+
+class WindowsTicket:
+    def __init__(self, command):
+        self.command = command
+
+    def RemoveUser_Windows(self):
+        try:
+            wu = win_user
+            print(self.command)
+            print(wu.EXAMPLES)
+
+            # userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            # print(userhost)
+            # myinput = str("echo -e '" + self.mypw + "' | sudo -S /usr/sbin/userdel -r " + self.userid +
+            #               " && echo Successfully Executed\n").encode('utf-8')
+            # result = run(['ssh',  userhost, '/bin/bash'], stdout=PIPE, input=myinput)
+            # self.stdout = result.stdout.decode('utf-8')
+            # print(self.stdout)
+            # return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+
+class AIXTicket:
+    def __init__(self, myuser, mypw, ipaddress, userid, userpw, command, uid, usergroup, stdout):
+        self.myuser = myuser
+        self.mypw = mypw
+        self.ipaddress = ipaddress
+        self.userid = userid
+        self.userpw = userpw
+        self.command = command
+        self.uid = uid
+        self.usergroup = usergroup
+        self.stdout = stdout
+
+    def NewUser_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str("grep " + self.userid + " /etc/passwd").encode('utf-8')
+            result1 = run(['ssh', userhost], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print(self.stdout)
+
+            if self.stdout != '':
+                colon = self.stdout.index(':')
+                username = self.stdout[0:colon]
+            else:
+                username = self.stdout
+
+            if self.userid not in username:
+                myinput2 = str(
+                    "echo -e '" + self.mypw + "\n' | sudo -S mkuser gecos='" + self.command + "' " + self.uid + " " + self.userid +
+                    " && echo -e " + self.userid + ":" + self.mypw + " | sudo -S /usr/bin/chpasswd && echo Successfully Executed;").encode('utf-8')
+                result2 = run(['ssh', userhost], stdout=PIPE, input=myinput2)
+                self.stdout = result2.stdout.decode('utf-8')
+                print(self.stdout)
+            else:
+                print("User " + self.userid + " already exists.")
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def ChangeMyPassword_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput = str("echo -e '" + self.mypw + "\n" + self.mypw + "\n' | sudo -S passwd " + self.userid +
+                          " && echo Successfully Executed\n").encode('utf-8')
+            result = run(['ssh', userhost], stdout=PIPE, input=myinput)
+            self.stdout = result.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def ChangeUserPassword_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str("sudo /usr/bin/chuser unsuccessful_login_count=0 " + self.userid + " && echo "
+                           + self.userid + ":'" + self.userpw + "' | sudo /usr/bin/chpasswd && echo Successfully Executed").encode('utf-8')
+            result1 = run(['ssh', userhost], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def UnlockUser_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str("sudo /usr/bin/chuser unsuccessful_login_count=0 " + self.userid +
+                           " && echo Successfully Executed").encode('utf-8')
+            result1 = run(['ssh', userhost], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    #AIX user removal sometimes will not allow removal of /home/ drive, so 2nd remove user type is needed
+    def RemoveUser_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput = str("echo -e '" + self.mypw + "\n' | sudo -S /usr/sbin/rmuser -p " + self.userid +
+                        " && echo Successfully Executed").encode('utf-8')
+            result = run(['ssh', userhost], stdout=PIPE, input=myinput)
+            self.stdout = result.stdout.decode('utf-8')
+            print(self.stdout)
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def RemoveUserAndHomeDrive_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput = str("echo -e '" + self.mypw + "\n' | sudo -S /usr/sbin/rmuser -p " + self.userid +
+                        " && sudo -S rm -rf /home/" + self.userid + "; echo Successfully Executed").encode('utf-8')
+            result = run(['ssh', userhost], stdout=PIPE, input=myinput)
+            self.stdout = result.stdout.decode('utf-8')
+            print(self.stdout)
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def ChangeGroups_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str(
+                "U=" + self.userid + "; GROUP=" + self.usergroup + "; G=$(lsuser -a groups $U|awk -F'=' {'print $2'}|sed 's/ //g'); echo -e '" + self.mypw +
+                "\n' | sudo -S chuser groups=$G,$GROUP $U && G=$(lsuser -a groups $U|awk -F'=' {'print $2'}) && echo User:" + self.userid + " has Groups:$G - Successfully Executed").encode('utf-8')
+            result1 = run(['ssh', userhost], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            if "Operation timed out" in self.stdout:
+                pass
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def RemoveGroups_AIX(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str(
+                "U=" + self.userid + "; GROUP=" + self.usergroup + "; LSUSER='lsuser -a groups'; ERMSG='ERROR: Cannot remove primary group'; P=$(id -gn $U); G=$(id -Gn $U|sed 's/ /,/g'); Gt=,$G,; Gt=$(echo $Gt|grep ,$GROUP,); if [[ $Gt = '' ]]; then echo ERROR: " + self.userid +
+                " does not have group '" + self.usergroup + "'; else if [[ $P = $G ]]; then echo $ERMSG; elif [[ $P = $GROUP ]]; then echo $ERMSG; else G=${G#$GROUP,}; G=${G%,$GROUP}; G=$(echo $G|sed 's/,$GROUP,/,/g;'); G=${G#$P,}; G=${G%$P,}; G=$(echo $G|sed 's/,$P,/,/g;'); if [[ $G = $P ]]; then id $U>/dev/null && echo '" + self.mypw +
+                "\n' | sudo -S chuser groups=$P $U && G=$(id -Gn $U|sed 's/ /,/g') && echo $G - Successfully Executed Option 1; else id $U>/dev/null && echo '" + self.mypw +
+                "\n' | sudo -S chuser groups=$G $U && G=$(id -Gn $U|sed 's/ /,/g') && echo $G - Successfully Executed Option 2; fi; fi; fi;"
+            ).encode('utf-8')
+            result1 = run(['ssh', userhost], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            if "Operation timed out" in self.stdout:
+                pass
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+
+class LinuxTicket:
+    def __init__(self, myuser, mypw, ipaddress, userid, userpw, command, uid, usergroup, stdout):
+        self.myuser = myuser
+        self.mypw = mypw
+        self.ipaddress = ipaddress
+        self.userid = userid
+        self.userpw = userpw
+        self.command = command
+        self.uid = uid
+        self.usergroup = usergroup
+        self.stdout = stdout
+
+    def NewUser_Linux(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            username = ''
+            print(userhost)
+
+            myinput1 = str("grep " + self.userid + " /etc/passwd ").encode('utf-8')
+            result1 = run(['ssh', userhost, '/bin/bash'], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("self.stdout: {}".format(self.stdout))
+
+            try:
+                colon = self.stdout.index(':')
+                username = self.stdout[0:colon]
+                print("Username: {}".format(username))
+                print("self.user: {}".format(self.userid))
+            except ValueError as e:
+                print("Value Error: {}".format(e))
+                print("Username: {}".format(username))
+                print("self.user: {}".format(self.userid))
+                pass
+
+            if self.userid not in username:
+                myinput2 = str(
+                    "echo -e '" + self.mypw + "\n' | sudo -S /usr/sbin/useradd -g users -u " + self.uid + " -c '" +
+                    self.command + "' " + self.userid + "; sudo -S chage -d0 " + self.userid +
+                    " ;groups " + self.userid + " ;echo -e '" + self.userpw + "\n" + self.userpw +
+                    "\n' | sudo -S passwd " + self.userid + ";").encode('utf-8')
+                result2 = run(['ssh', userhost, '/bin/bash'], stdout=PIPE, input=myinput2)
+                self.stdout = result2.stdout.decode('utf-8')
+                print("Output 2: " + self.stdout)
+                return self.stdout
+            else:
+                print("User " + self.userid + " already exists.")
+
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def ChangeMyPassword_Linux(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput = str("echo -e '" + self.mypw + "\n" + self.mypw + "\n' | sudo -S passwd " + self.myuser +
+                          " && echo Successfully Executed\n").encode('utf-8')
+            result = run(['ssh', userhost], stdout=PIPE, input=myinput)
+            self.stdout = result.stdout.decode('utf-8')
+            print(self.stdout)
+            return self.stdout
+
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def ChangeUserPassword_Linux(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str("echo '***************' | sudo passwd --stdin laytonc && sudo /usr/bin/chage -d 0 laytonc && echo Successfully Executed").encode('utf-8')
+            result1 = run(['ssh', userhost, '/bin/bash'], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def ChangeGroups_Linux(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str(
+                    "echo -e '" + self.mypw + "\n' | sudo -S /usr/sbin/usermod -a " + self.userid +
+                    " -G " + self.usergroup + " && groups " + self.userid + " && echo Successfully Executed").encode('utf-8')
+            result1 = run(['ssh', userhost, '/bin/bash'], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def CreatePrivOnDevice_Linux(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput1 = str(
+                    "echo -e '" + self.mypw + "\n' | sudo -S /usr/sbin/groupadd " + self.usergroup +
+                    " && echo Successfully Executed").encode('utf-8')
+            result1 = run(['ssh', userhost, '/bin/bash'], stdout=PIPE, input=myinput1)
+            self.stdout = result1.stdout.decode('utf-8')
+            print("Output 1: " + self.stdout)
+            return self.stdout
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
+
+    def RemoveUser_Linux(self):
+        try:
+            userhost = ("{}@{}".format(self.myuser, self.ipaddress))
+            print(userhost)
+            myinput = str("echo -e '" + self.mypw + "' | sudo -S /usr/sbin/userdel -r " + self.userid +
+                          " && echo Successfully Executed\n").encode('utf-8')
+            result = run(['ssh',  userhost, '/bin/bash'], stdout=PIPE, input=myinput)
+            self.stdout = result.stdout.decode('utf-8')
+            print(self.stdout)
+            return self.stdout
+
+        except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
+            pass
 
 
 class Counter:
@@ -95,7 +375,7 @@ class StartPage(Frame):
         self.leftframe.pack(side=LEFT)
 
         self.lab = Label(self.leftframe)
-        self.lab.img = PhotoImage(file='uat.gif')
+        self.lab.img = PhotoImage(file='lib/uat.gif')
         self.lab.config(image=self.lab.img)
         self.lab.grid()
 
@@ -162,11 +442,16 @@ class MainStart(Frame):
         self.Creds_button = Button(self.leftframe, text="Verify Credentials", state=DISABLED, command=lambda: self.verifyW3())
         self.Creds_button.grid(row=2, column=1)
 
+        #need the ability to bypass user creds entry in self.processCSV() by first performing check, by reading in existing .csv and
+        #comparing to what already exists, and go straight to populating 2nd treebox with user login/password info
+        #that is relevant to current checked checkboxes
+        #ACTUALLY: I just need to copy/paste the existing check that happens inside of 'Enter UserID and Pass' button
         self.Run_button = Button(self.leftframe, text="Run", state=DISABLED, command=lambda: self.processCSV())
         self.Run_button.grid(row=2, column=2)
 
         self.Browse_button = Button(self.leftframe, text="Browse", command=lambda: self.loadCSV())
         self.Browse_button.grid(row=1, column=2)
+
 
         self.rightframe = Frame(master=self)
         self.rightframe.pack(side=RIGHT)
@@ -174,14 +459,11 @@ class MainStart(Frame):
         TableMargin = Frame(self.rightframe, height=300, width=400)
         TableMargin.grid(row=1, sticky='w')
 
-
     def show_output_user(self, event):
         print("User: {}".format(self.User_var.get()))
 
-
     def show_output_passwd(self, event):
         print("Password: {}".format(self.Passwd_var.get()))
-
 
     def verifyW3(self):
 
@@ -208,7 +490,6 @@ class MainStart(Frame):
             self.Creds_button.config(state=DISABLED)
             self.Browse_button.config(state=DISABLED)
 
-
     def getW3data(self):
         # self.UserEntry.grid(row=3, column=1)
         self.Entry_user = self.User_var.get()
@@ -231,7 +512,6 @@ class MainStart(Frame):
             self.create_creds()
         else:
             return self.Entry_user, self.Entry_password
-
 
     def getIDandPassword(self):
         # self.UserEntry.grid(row=3, column=1)
@@ -256,7 +536,6 @@ class MainStart(Frame):
             self.updateHosts()
         else:
             return self.Entry_user, self.Entry_password
-
 
     def create_creds(self):
         # self.show_output_user()
@@ -287,17 +566,12 @@ class MainStart(Frame):
         except IOError as e:
             print("Chmod error {}".format(e))
 
-    # not adding new user/pass to .csv, not populating 2nd treebox with info,
-    # not changing 'process tickets' button to 'normal' state
-
     def ParsedCsv(self, filepath):
         self.filepath = filepath
 
         # filepath = '/Users/*/Downloads/*.csv'
         list_of_files = glob.glob(self.filepath)
         latest_file = max(list_of_files, key=os.path.getctime)
-
-        print("Latest file: {}".format(latest_file))
 
         with open(latest_file, newline='') as incsv:
             readCSV = csv.reader(incsv, delimiter=';')
@@ -336,6 +610,7 @@ class MainStart(Frame):
                 UserIDs.append(userid)
                 Privs.append(priv)
 
+
             parsed_csv = np.array([Requests, Services, CustEnvs, Platforms, IPs, Emp_Owners, Devices, Serials, UserIDs, Privs])
             self.slicedRequests = (parsed_csv[0, 1:])
             self.slicedServices = (parsed_csv[1, 1:])
@@ -349,7 +624,6 @@ class MainStart(Frame):
             self.slicedPrivs = (parsed_csv[9, 1:])
         return self.slicedRequests, self.slicedServices, self.slicedCustEnv, self.slicedPlatforms, self.slicedIPs, self.slicedEmpOwners, self.slicedDevices, self.slicedSerials, self.slicedUserIDs, self.slicedPrivs
 
-
     def loadCSV(self):
         lo = Leftovers()
         self.controller.withdraw()
@@ -361,10 +635,10 @@ class MainStart(Frame):
         self.filepath = lo.FILE_path
         self.Creds_button.config(state="normal")
 
-
     def processCSV(self):
         # print("loadCSV - File path: {}".format(self.filepath))
         if '.csv' in self.filepath:
+
             # If user clicks 'OK' multiple times, this will prevent things from breaking :)
             Frame(self.rightframe).destroy()
             Leftovers.CHECKBOX_List = []
@@ -373,7 +647,6 @@ class MainStart(Frame):
             Select_all.grid(row=5, sticky='w')
             Deselect_all = Button(self.rightframe, text="De-select All", command=lambda: self.deselectAllBoxes())
             Deselect_all.grid(row=6, sticky='w')
-
 
             TableMargin = Frame(self.rightframe, height=300, width=400)
             TableMargin.grid(row=1, sticky='w')
@@ -390,7 +663,6 @@ class MainStart(Frame):
 
             scrollbarx.config(command=self.boxtree.xview)
             scrollbarx.grid(row=4, sticky='w')
-
 
             self.boxtree.heading('Request', text="Request", anchor=W)
             self.boxtree.heading('Service', text="Service", anchor=W)
@@ -413,6 +685,7 @@ class MainStart(Frame):
             self.boxtree.column('#8', stretch=NO, minwidth=0, width=100)
             self.boxtree.column('#9', stretch=NO, minwidth=0, width=100)
             self.boxtree.column('#10', stretch=NO, minwidth=0, width=100)
+
             self.boxtree.grid(row=3, column=0, sticky='nw')
 
             self.ParsedCsv(self.filepath)
@@ -425,11 +698,18 @@ class MainStart(Frame):
                 Leftovers.CHECKBOX_List.append(request)
             print(Leftovers.CHECKBOX_List)
 
-            #next version, have 'command=lambda: self.controller.show_frame("MainComplete")
+
+            self.UserEntry.delete(0, END)
+            self.PasswordEntry.delete(0, END)
+
+            self.UserEntry.insert(0, '')
+            self.PasswordEntry.insert(0, '')
+
+            # next version, have 'command=lambda: self.controller.show_frame("MainComplete")
             self.compareHosts()
+
         else:
             pass
-
 
     def compareHosts(self):
         #Need to get select all/de-select all working
@@ -446,7 +726,6 @@ class MainStart(Frame):
         scrollbarx.config(command=self.boxtree.xview)
         scrollbarx.grid(row=4, sticky='w')
 
-        # Delivery Team	Platform	Hostname	IP Address	User ID	Password
         self.boxtree = CheckboxTreeview(TableMargin, columns=('DeliveryTeam', 'Platform', 'Hostname', 'IPAddress', 'UserID', 'Password'),
                                         selectmode="extended", yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
 
@@ -467,27 +746,38 @@ class MainStart(Frame):
 
         self.boxtree.grid(row=3, column=0, sticky='sw')
 
+        self.Entry_user = ''
+        self.Entry_password = ''
+
         self.Compare_Button = Button(self.leftframe, text="Enter UserID and Pass", command=lambda: self.getIDandPassword())
         self.Compare_Button.grid(row=5, column=1, sticky='e')
+
 
         #     Leftovers.CHECKBOX_List.append(request)
         # print(Leftovers.CHECKBOX_List)
 
 
     def updateHosts(self):
+        # include a line that either maximizes the window, or forces geometry change
+        # self.geometry = ('1440x700')
 
         self.Next_Button = Button(self.leftframe, text="Process Tickets", state=DISABLED, command=lambda: self.main())
         self.Next_Button.grid(row=6, column=1, sticky='e')
 
-        DeliveryTeams, Platforms, Hosts, IPAddresses, UserIDs, Passwords = [], [], [], [], [], []
+
+        # INSTEAD OF INITIALIZING TO ZERO,
+        # POPULATE THESE LISTS WITH INFO FROM THE HOSTS FILE, FIRST
+        # ALSO POPULATE TREEBOX IN 2ND FRAME WITH THIS INFO
+        DeliveryTeams_Old, Platforms_Old, Hosts_Old, IPAddresses_Old, UserIDs_Old, Passwords_Old = [], [], [], [], [], []
+
 
         with open(self.os_path, newline='') as incsv:
             readCSV = csv.reader(incsv, delimiter=';')
 
-            # may allow for user input to select 'index' value of below sort
+            # may allow for user input to select 'index' value of sort
             # and display the hosts in a treebox so they can compare/control both with one checkbox
             # sortedCSV = sorted(readCSV, key=lambda r: r[5])
-
+            # for row in sortedCSV:
             for row in readCSV:
                 print("Row: {}".format(row))
                 deliveryteam = row[0]
@@ -497,66 +787,62 @@ class MainStart(Frame):
                 userid = row[4]
                 password = row[5]
 
-                DeliveryTeams.append(deliveryteam)
-                Platforms.append(platform)
-                Hosts.append(host)
-                IPAddresses.append(ipaddress)
-                UserIDs.append(userid)
-                Passwords.append(password)
+            DeliveryTeams_Old.append(deliveryteam)
+            Platforms_Old.append(platform)
+            Hosts_Old.append(host)
+            IPAddresses_Old.append(ipaddress)
+            UserIDs_Old.append(userid)
+            Passwords_Old.append(password)
 
-            # OldArray = np.array([DeliveryTeams, Platforms, Hosts, IPAddresses, UserIDs, Passwords])
-            # OldDelTeams = (OldArray[0, 2:])
-            # OldPlatforms = (OldArray[1, 2:])
-            # OldHosts = (OldArray[2, 2:])
-            # OldIPs = (OldArray[3, 2:])
-            # OldUsers = (OldArray[4, 2:])
-            # OldPasswords = (OldArray[5, 2:])
-
-
-        self.empty_array = np.array([self.NewDeliveryTeams, self.NewPlatforms, self.NewHosts, self.NewIPAddresses, self.NewUserIDs, self.NewPasswords])
-
-        # parsed_csv = np.array([Requests, Services, CustEnvs, Platforms, IPs, Emp_Owners, Devices, Serials, UserIDs, Privs])
-        # Delivery Team	Platform	Hostname	IP Address	User ID	Password
+        print("OLD\nDelivery Teams: {}\nPlatforms: {}\nHosts: {}\nIPAddresses: {}\nUserIDs: {}\nPasswords: {}\n".format(
+            DeliveryTeams_Old, Platforms_Old, Hosts_Old, IPAddresses_Old, UserIDs_Old, Passwords_Old))
 
         for team, platform, host, ipaddress in zip(self.slicedCustEnv, self.slicedPlatforms, self.slicedDevices, self.slicedIPs):
-            print("Hostname: {}\nslicedOld: {}\nParsedcsv Devices: {}\n".format(host, Hosts, self.slicedDevices))
-            if host not in Hosts:
-                self.NewDeliveryTeams.append(team)
-                self.NewPlatforms.append(platform)
-                self.NewHosts.append(host)
-                self.NewIPAddresses.append(ipaddress)
-                self.NewUserIDs.append(self.Entry_user)
-                self.NewPasswords.append(self.Entry_password)
-            try:
-                with open(self.os_path, 'a') as writeFile:
-                    writer = csv.writer(writeFile, delimiter=';')
-                    writer.writerows(self.NewDeliveryTeams)
-                    writer.writerows(self.NewPlatforms)
-                    writer.writerows(self.NewHosts)
-                    writer.writerows(self.NewIPAddresses)
-                    writer.writerows(self.NewUserIDs)
-                    writer.writerows(self.NewPasswords)
-            except IOError as e:
-                print("Error appending Hosts log {}".format(e))
+            print("Hostname: {}\nslicedOld: {}\nParsedcsv Devices: {}\n".format(host, Hosts_Old, self.slicedDevices))
+            if host not in Hosts_Old:
+                print("New host entry:{} found".format(host))
+
+                # self.NewDeliveryTeams.append(team)
+                # self.NewPlatforms.append(platform)
+                # self.NewHosts.append(host)
+                # self.NewIPAddresses.append(ipaddress)
+                self.NewUserIDs = self.Entry_user
+                self.NewPasswords = self.Entry_password
+
+                NewRow = [team, platform, host, ipaddress, self.NewUserIDs, self.NewPasswords]
+                try:
+                    with open(self.os_path, 'a') as writeFile:
+                        writer = csv.writer(writeFile, delimiter=';')
+                        writer.writerow(NewRow)
+                except IOError as e:
+                    print("Error appending Hosts log {}".format(e))
+
+                print("NEW\nDelivery Team: {}\nPlatform: {}\nHost: {}\nIPAddress: {}\nUserID: {}\nPassword: {}\n".format(
+                    team, platform, host, ipaddress, self.NewUserIDs, self.NewPasswords))
+
+                print("Updating boxtree")
+                self.boxtree.change_state(self.checkbox, "checked")
+                self.boxtree.insert("", 0,
+                                    values=(team, platform, host, ipaddress, self.NewUserIDs, self.NewPasswords))
+
+                Hosts_Old.append(host)
             else:
-                print("{} was found in {}".format(host, Hosts))
+                print("Host {} already exists in file".format(host))
                 self.Next_Button.config(state='normal')
-                #change another button state to disabled?
+                # self.Compare_Button.config(state=DISABLED)
 
-        for (team, platform, hostname, ipaddress, userid, passwd) in zip(self.NewDeliveryTeams, self.NewPlatforms, self.NewHosts,
-                                                                         self.NewIPAddresses, self.NewUserIDs, self.NewPasswords):
-            print("Updating boxtree")
-            self.boxtree.change_state(self.checkbox, "checked")
-            self.boxtree.insert("", 0, values=(team, platform, hostname, ipaddress, userid, passwd))
 
+
+        self.Next_Button.config(state='normal')
+        # self.Compare_Button.config(state=DISABLED)
 
     def selectAllBoxes(self):
         for (request, service, cust_env, platform, ip, owner, device, serial, user_id, priv) in zip(self.ParsedCsv(self.filepath)[0], self.ParsedCsv(self.filepath)[1], self.ParsedCsv(self.filepath)[2], self.ParsedCsv(self.filepath)[3], self.ParsedCsv(self.filepath)[4], self.ParsedCsv(self.filepath)[5], self.ParsedCsv(self.filepath)[6], self.ParsedCsv(self.filepath)[7], self.ParsedCsv(self.filepath)[8], self.ParsedCsv(self.filepath)[9]):
+
             self.boxtree.change_state(self.checkbox, "checked")
             if request not in Leftovers.CHECKBOX_List:
                 Leftovers.CHECKBOX_List.append(request)
             print(Leftovers.CHECKBOX_List)
-
 
     def deselectAllBoxes(self):
         for (request, service, cust_env, platform, ip, owner, device, serial, user_id, priv) in zip(self.ParsedCsv(filepath=self.filepath)[0], self.ParsedCsv(filepath=self.filepath)[1], self.ParsedCsv(filepath=self.filepath)[2], self.ParsedCsv(filepath=self.filepath)[3], self.ParsedCsv(filepath=self.filepath)[4], self.ParsedCsv(filepath=self.filepath)[5], self.ParsedCsv(filepath=self.filepath)[6], self.ParsedCsv(filepath=self.filepath)[7], self.ParsedCsv(filepath=self.filepath)[8], self.ParsedCsv(filepath=self.filepath)[9]):
@@ -565,19 +851,30 @@ class MainStart(Frame):
                 Leftovers.CHECKBOX_List.remove(request)
             print(Leftovers.CHECKBOX_List)
 
-
     def main(self):
         ###future goal to implement button that will connect to UAT and auto-download .CSV###
         # bs = BrowserSelect(browser=webdriver.Safari(), input_browser='', url='https://uat.us.ibm.com/iam?SSOlogin=true')
         # bs.browserDefintion()
         # print(bs.browser)
         # bs.uatDownloadCSV()
+
+        def uatPart2():
+            quit()
+            # response = input("Read output. Enter 'y' to close tickets, or 'n' to quit: ").lower()
+            # if response == 'y':
+            #     print("Check the log, and close 'em yourself")
+            #     quit()
+            # elif response == 'n':
+            #     print("Ok, not closing tickets....HAVE A GOOD DAY")
+            #     quit()
+            # else:
+            #     print("Please enter either 'y' or 'n'")
+            #     uatPart2()
+
         mc = Counter()
         UID = str(rand(4000, 44000))
 
-        CompletedTickets = []
-        FailedTickets = []
-        row = ['Request Number', 'Completed/Failed', 'User ID', 'Temp Passwd']
+        row = ['Request Number', 'Completed/Failed', 'User ID', 'Temp Passwd', 'Output']
 
         timestr = time.strftime("%Y%m%d-%H%M%S")
         os_dirpath = os.path.abspath('.') + '/UATLogs/'
@@ -587,25 +884,72 @@ class MainStart(Frame):
         try:
             if not os.path.exists(os_dirpath):
                 os.makedirs(os_dirpath)
-            with open(os_path, 'w') as writeFile:
+            with open(os_path, 'w', newline='') as writeFile:
                 writer = csv.writer(writeFile, delimiter=';')
                 writer.writerow(row)
         except IOError as e:
             print("Error creating UAT log: {}".format(e))
 
+        with open(self.os_path, newline='') as incsv:
+            readCSV = csv.reader(incsv, delimiter=';')
+            My_Hosts, My_Users, My_Pws = [], [], []
+            # may allow for user input to select 'index' value of sort
+            # and display the hosts in a treebox so they can compare/control both with one checkbox
+            # sortedCSV = sorted(readCSV, key=lambda r: r[5])
+            # for row in sortedCSV:
+            for row in readCSV:
+                print("Row: {}".format(row))
+                my_host = row[2]
+                my_user = row[4]
+                my_pw = row[5]
+                My_Hosts.append(my_host)
+                My_Users.append(my_user)
+                My_Pws.append(my_pw)
+            My_Hosts = My_Hosts[2:]
+            My_Users = My_Users[2:]
+            My_Pws = My_Pws[2:]
+            print("My_Hosts: {}\nMy_Users: {}\nMy_Pws: {}\n".format(My_Hosts, My_Users, My_Pws))
+
+        def return_my_user(hostlist, userlist):
+            for devices, host, user in zip(self.ParsedCsv(self.filepath)[6], hostlist, userlist):
+                if devices not in hostlist:
+                    pass
+                else:
+                    return user
+
+        def return_my_pw(hostlist, pwlist):
+            for devices, host, pw in zip(self.ParsedCsv(self.filepath)[6], hostlist, pwlist):
+                if devices not in hostlist:
+                    pass
+                else:
+                    return pw
+
+        def return_my_request(hostlist, requestlist):
+            for devices, host, my_request in zip(self.ParsedCsv(self.filepath)[6], hostlist, requestlist):
+                if devices not in hostlist:
+                    pass
+                else:
+                    return my_request
 
 
-        for (request, service, cust_env, platform, ip, owner, device, serial, user_id, priv) in zip(self.ParsedCsv(self.filepath)[0], self.ParsedCsv(self.filepath)[1], self.ParsedCsv(self.filepath)[2], self.ParsedCsv(self.filepath)[3], self.ParsedCsv(self.filepath)[4], self.ParsedCsv(self.filepath)[5], self.ParsedCsv(self.filepath)[6], self.ParsedCsv(self.filepath)[7], self.ParsedCsv(self.filepath)[8], self.ParsedCsv(self.filepath)[9]):
-            if request in Leftovers.CHECKBOX_List:
+        for (service, cust_env, platform, ip, owner, device, serial, user_id, priv) in zip(self.ParsedCsv(self.filepath)[1],
+                self.ParsedCsv(self.filepath)[2], self.ParsedCsv(self.filepath)[3], self.ParsedCsv(self.filepath)[4],
+                self.ParsedCsv(self.filepath)[5], self.ParsedCsv(self.filepath)[6], self.ParsedCsv(self.filepath)[7],
+                self.ParsedCsv(self.filepath)[8], self.ParsedCsv(self.filepath)[9]):
+
+            request = return_my_request(My_Hosts, Leftovers.CHECKBOX_List)
+            while request in Leftovers.CHECKBOX_List != '':
                 try:
-                    sub_dirpath = '~/UAT/'
-                    sub_filename = '{}.ppx'.format(cust_env)
-                    proxy_process_path = os.path.join(sub_dirpath, sub_filename)
-                    result = run(['open', '-a', 'Proxifier', proxy_process_path], stdout=PIPE)
+                    path = os.path.abspath('.')
+                    slash1 = path.index('/')
+                    subtractUAT_dir = path[slash1:-3]
+
+                    proxy_filename = '/Library/Application Support/Proxifier/Profiles/{}.ppx'.format(cust_env)
+                    path2_process_path = ("{}{}".format(subtractUAT_dir, proxy_filename))
+                    result = run(['open', '-a', 'Proxifier', path2_process_path], stdout=PIPE)
                     print(result.stdout.decode('utf-8'))
                 except Exception as e:
                     print("Exception: {}".format(e))
-
 
                 def gecosmaker():
                     c_first = [char for char in serial][-3:]
@@ -626,6 +970,7 @@ class MainStart(Frame):
 
                     # Either make name counting more sophisticated or add more if/elif statements
                     # Currently does not account for many Spanish/Portuguese names with 5/6 names
+
                     if owner.count(' ') == 3:
                         space1 = owner.index(' ')
                         first_name = owner[0:space1]
@@ -635,8 +980,10 @@ class MainStart(Frame):
 
                         space3 = owner.index(' ', space2 + 1)
                         nickname = owner[space2 + 1:space3]
+
                         if nickname == '*CONTRACTOR*':
                             emp_status = 'E'
+
                         last_name = owner[space3 + 1:]
 
                         new_namelist = "{}.{} {} {}".format(last_name, first_name, middle_initial, nickname)
@@ -669,43 +1016,49 @@ class MainStart(Frame):
                     password_characters = string.ascii_letters + string.digits + string.punctuation
                     return ''.join(secrets.choice(password_characters) for i in range(string_length))
 
+                std_out = ''
+                user_pass = ''
+                command = gecosmaker()
+                my_user = return_my_user(My_Hosts, My_Users)
+                my_pw = return_my_pw(My_Hosts, My_Pws)
 
-                user_pass = SecureRandomString(12)
+                AIX = AIXTicket(myuser=my_user, mypw=my_pw, ipaddress=my_host, userid=user_id,
+                                usergroup=priv, userpw=user_pass, command=command, uid=UID, stdout=std_out)
+                Linux = LinuxTicket(myuser=my_user, mypw=my_pw, ipaddress=my_host, userid=user_id,
+                                    usergroup=priv, userpw=user_pass, command=command, uid=UID, stdout=std_out)
 
-                Command = gecosmaker()
-
-                spchAIX = SpchAIXTicket(myuser=self.NewUserIDs, mypw=self.NewPasswords, ipaddress=device, userid=user_id,
-                                        usergroup=priv, userpw=user_pass, command=Command, uid=UID, stdout='')
-                spchLinux = SpchLinuxTicket(myuser=self.NewUserIDs, mypw=self.NewPasswords, ipaddress=device, userid=user_id,
-                                            usergroup=priv, userpw=user_pass, command=Command, uid=UID, stdout='')
-                nyctAIX = SpchAIXTicket(myuser=self.NewUserIDs, mypw=self.NewPasswords, ipaddress=device, userid=user_id,
-                                        usergroup=priv, userpw=user_pass, command=Command, uid=UID, stdout='')
-                olinAIX = SpchAIXTicket(myuser=self.NewUserIDs, mypw=self.NewPasswords, ipaddress=device, userid=user_id,
-                                        usergroup=priv, userpw=user_pass, command=Command, uid=UID, stdout='')
-
-                # windows = SpchWindowsTicket(command='hi')
-                # windows.spchRemoveUserWindows()
+                # windows = WindowsTicket(command='hi')
+                # windows.RemoveUser_Windows()
 
                 def ticketappend(stdout):
                     words = stdout.split()
                     if "Successfully" not in words:
-                        FailedTickets.append([request, "failed"])
+                        FailedTicket = [request, "failed", user_id, user_pass, stdout]
                         mc.failed_increment()
                         print("Failed ticket " + str(request))
+                        try:
+                            with open(os_path, 'a', newline='') as wF:
+                                write = csv.writer(wF, delimiter=';')
+                                write.writerow(FailedTicket)
+                        except IOError as err:
+                            print("Error appending UAT log: {}".format(err))
                     elif "Successfully" in words:
-                        CompletedTickets.append([request, "completed"])
+                        CompletedTicket = [request, "completed", user_id, user_pass, stdout]
                         mc.complete_increment()
                         print("Completed ticket " + str(request))
+                        try:
+                            with open(os_path, 'a', newline='') as wF:
+                                write = csv.writer(wF, delimiter=';')
+                                write.writerow(CompletedTicket)
+                        except IOError as err:
+                            print("Error appending UAT log: {}".format(err))
                         if mc.complete_counter == 1000:
+                            print("Completed tickets has reached 1000. Please check log and close them in UAT")
                             uatPart2()
                         else:
                             pass
                     else:
                         pass
-
-
-                if cust_env == 'SHARED_PRIVATE_CLOUD_HUB-IAM':
-                    print(cust_env, service, platform, request)
 
                     ##OTHER TICKET TYPES
                     #
@@ -724,126 +1077,116 @@ class MainStart(Frame):
                     #Perform check on stdout, to see if uid is not unique, give 4 options, "force" UID through, prompt user for new UID, option to not enter a UID altogether, or option to skip that ticket
                     #
 
-                    if service == 'Personal UserID Creation' and platform == 'AIX':
-                        print("Starting request " + request)
-                        spchAIX.spchNewUserAIX()
-                        ticketappend(spchAIX.stdout)
+                if service == 'Personal UserID Creation' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    user_pass = SecureRandomString(12)
+                    AIX.NewUser_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
+                elif service == 'Personal UserID Creation' and platform == 'REDHAT LINUX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    user_pass = SecureRandomString(12)
+                    Linux.NewUser_Linux()
+                    ticketappend(Linux.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Personal UserID Creation' and platform == 'REDHAT LINUX':
-                        print("Starting request " + request)
-                        spchLinux.spchNewUserLinux()
-                        ticketappend(spchLinux.stdout)
+                elif service == 'Privilege Addition of Personnal User Account' and platform == 'REDHAT LINUX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    Linux.ChangeGroups_Linux()
+                    ticketappend(Linux.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
+                elif service == 'Unlock Personal User Account' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    AIX.UnlockUser_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Privilege Addition of Personnal User Account' and platform == 'REDHAT LINUX':
-                        print("Starting request " + request)
-                        spchLinux.spchChangeGroupsLinux()
-                        ticketappend(spchLinux.stdout)
+                elif service == 'Personal UserID Add Profile' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    AIX.ChangeGroups_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
+                elif service == 'Personal UserID Add Profile' and platform == 'REDHAT LINUX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    Linux.ChangeGroups_Linux()
+                    ticketappend(Linux.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Unlock Personal User Account' and platform == 'AIX':
-                        print("Starting request " + request)
-                        spchAIX.spchUnlockUserAIX()
-                        ticketappend(spchAIX.stdout)
+                elif service == 'Application UserID Add Profile' and platform == 'REDHAT LINUX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    UID = input("Please specify the UID for {} on server {}: ".format(Linux.userid, Linux.ipaddress))
+                    Linux.ChangeGroups_Linux()
+                    ticketappend(Linux.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Personal UserID Add Profile' and platform == 'AIX':
-                        print("Starting request " + request)
-                        spchAIX.spchChangeGroupsAIX()
-                        ticketappend(spchAIX.stdout)
+                elif service == 'Personal UserID Password Reset' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    user_pass = SecureRandomString(12)
+                    AIX.ChangeUserPassword_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
+                elif service == 'Create Privilege on device' and platform == 'REDHAT LINUX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    Linux.CreatePrivOnDevice_Linux()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Personal UserID Add Profile' and platform == 'REDHAT LINUX':
-                        print("Starting request " + request)
-                        spchLinux.spchChangeGroupsLinux()
-                        ticketappend(spchLinux.stdout)
+                elif service == 'Personal UserID Remove Profile' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    AIX.RemoveGroups_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
+                elif service == 'Personal UserID Add Profile' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    AIX.ChangeGroups_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Application UserID Add Profile' and platform == 'REDHAT LINUX':
-                        print("Starting request " + request)
-                        UID = input("Please specify the UID for {} on server {}: ".format(spchLinux.userid,
-                                                                                          spchLinux.ipaddress))
-                        spchLinux.spchChangeGroupsLinux()
-                        ticketappend(spchLinux.stdout)
+                elif service == 'Unlock Personal User Account' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    AIX.UnlockUser_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
+                elif service == 'Personal UserID Removal' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    AIX.RemoveUser_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Personal UserID Password Reset' and platform == 'AIX':
-                        print("Starting request " + request)
-                        spchAIX.spchPasswordResetAIX()
-                        ticketappend(spchAIX.stdout)
+                elif service == 'Remediation UserID Remove Profile From Device' and platform == 'AIX':
+                    print("Starting request: {}\nmyuser: {}\nmypasswd: {}\nmyhost: {}\n".format(request, my_user, my_pw, my_host))
+                    AIX.RemoveGroups_AIX()
+                    ticketappend(AIX.stdout)
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-                    elif service == 'Create Privilege on device' and platform == 'REDHAT LINUX':
-                        print("Starting request " + request)
-                        spchLinux.spchCreatePrivOnDeviceLinux()
-                        ticketappend(spchAIX.stdout)
-
-                    else:
-                        print(request, "I'm sorry, I can't do {} on {}, Dave".format(service, platform))
-                        ticketappend("{} {}".format(spchAIX.stdout, spchLinux.stdout))
-
-
-                elif cust_env == 'NYCT-IAM':
-                    print(cust_env, service, platform)
-                    if service == 'Personal UserID Add Profile' and platform == 'AIX':
-                        print("Starting request " + request)
-                        nyctAIX.spchChangeGroupsAIX()
-                        ticketappend(nyctAIX.stdout)
-                    else:
-                        print(request, "I'm sorry, I can't do " + service + " on " + platform + ", Dave")
-                        ticketappend(nyctAIX.stdout)
-
-
-                elif cust_env == 'OLIN-IAM':
-                    print(cust_env, service, platform, request)
-                    if service == 'Personal UserID Remove Profile':
-                        print("Starting request " + request)
-                        olinAIX.spchRemoveGroupsAIX()
-                        ticketappend(olinAIX.stdout)
-
-                    elif service == 'Personal UserID Add Profile' and platform == 'AIX':
-                        print("Starting request " + request)
-                        olinAIX.spchChangeGroupsAIX()
-                        ticketappend(olinAIX.stdout)
-
-                    elif service == 'Unlock Personal User Account' and platform == 'AIX':
-                        print("Starting request " + request)
-                        olinAIX.spchUnlockUserAIX()
-                        ticketappend(olinAIX.stdout)
-
-                    elif service == 'Personal UserID Removal' and platform == 'AIX':
-                        print("Starting request " + request)
-                        olinAIX.spchAIXRemoveUser()
-                        ticketappend(olinAIX.stdout)
-
-                    else:
-                        print(request, "I'm sorry, I can't do {} on {}, Dave".format(service, platform))
-                        ticketappend(olinAIX.stdout)
 
                 else:
-                    print("{}: I'm sorry, I can't do {}, Dave".format(request, cust_env))
-                    ticketappend("{} {}".format(spchAIX.stdout, spchLinux.stdout))
-            else:
-                pass
+                    ticketappend("I can't do {} on {}".format(service, platform))
+                    Leftovers.CHECKBOX_List.remove(request)
+                    print("Tickets remaining: {}".format(Leftovers.CHECKBOX_List))
 
-            try:
-                with open(os_path, 'a') as writeFile:
-                    writer = csv.writer(writeFile, delimiter=';')
-                    writer.writerows(CompletedTickets)
-                    writer.writerows(FailedTickets)
-            except IOError as e:
-                print("Error appending UAT log: {}".format(e))
+        uatPart2()
 
-            def uatPart2():
-                response = input("Read output. Enter 'y' to close tickets, or 'n' to quit: ").lower()
-                if response == 'y':
-                    print("Ok, closing tickets.....NOT")
-                    quit()
-                elif response == 'n':
-                    print("Ok, not closing tickets....HAVE A GOOD DAY")
-                    quit()
-                else:
-                    print("Please enter either 'y' or 'n'")
-                    uatPart2()
 
 
 
@@ -856,7 +1199,6 @@ class Config(Frame):
         self.controller = controller
         label = Label(self, text="Configuration", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-
 
         # creds_button = Button(self, text="Manually Edit\nCredentials File", command=lambda: self.verifyW3())
         # creds_button.pack()

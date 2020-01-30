@@ -6,7 +6,6 @@ class SpchWindowsTicket:
     def __init__(self, command):
         self.command = command
 
-
     def spchRemoveUserWindows(self):
         try:
             wu = win_user
@@ -36,7 +35,6 @@ class SpchAIXTicket:
         self.uid = uid
         self.usergroup = usergroup
         self.stdout = stdout
-
 
     def spchNewUserAIX(self):
         try:
@@ -100,7 +98,7 @@ class SpchAIXTicket:
         except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
             pass
 
-
+    #AIX user removal sometimes will not allow removal of /home/ drive, so 2nd remove user type is needed
     def spchAIXRemoveUser(self):
         try:
             userhost = self.myuser + str(self.ipaddress)
@@ -128,7 +126,6 @@ class SpchAIXTicket:
             return self.stdout
         except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
             pass
-
 
     def spchRemoveGroupsAIX(self):
         try:
@@ -223,13 +220,11 @@ class SpchLinuxTicket:
         try:
             userhost = self.myuser + str(self.ipaddress)
             print(userhost)
-            myinput1 = str(
-            "echo 'Df,5bQ.A2l4D.e1' | sudo passwd --stdin laytonc && sudo /usr/bin/chage -d 0 laytonc && echo Successfully Executed").encode('utf-8')
+            myinput1 = str("echo '***************' | sudo passwd --stdin laytonc && sudo /usr/bin/chage -d 0 laytonc && echo Successfully Executed").encode('utf-8')
             result1 = run(['ssh', userhost, '/bin/bash'], stdout=PIPE, input=myinput1)
             self.stdout = result1.stdout.decode('utf-8')
             print("Output 1: " + self.stdout)
             return self.stdout
-
         except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
             pass
 
@@ -279,4 +274,3 @@ class SpchLinuxTicket:
             return self.stdout
         except TimeoutExpired(timeout=5, cmd=[b'Timeout Exceeded 5 seconds, disconnecting']):
             pass
-

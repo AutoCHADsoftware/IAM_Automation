@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f461a871-efab-411d-8720-2d6009febe64" name="Default Changelist" comment="" />
+    <list default="true" id="f461a871-efab-411d-8720-2d6009febe64" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/CSVParser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Checked.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Checked.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NYCT-IAM.ppx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OLIN-IAM.ppx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PowershellPlaybook.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/PowershellPlaybook.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RSAcheck.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RSAcheck.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Type1Playbook.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Type1Playbook.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UATMain.py" beforeDir="false" afterPath="$PROJECT_DIR$/UATMain2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UATSelenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UATSelenium.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/checked.png" beforeDir="false" afterPath="$PROJECT_DIR$/lib/checked.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tristate.png" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tristate.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uat.gif" beforeDir="false" afterPath="$PROJECT_DIR$/lib/uat.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unchecked.png" beforeDir="false" afterPath="$PROJECT_DIR$/lib/unchecked.png" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -9,64 +27,94 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/UATMain.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1292">
-              <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
-              <folding>
-                <element signature="e#2629#3104#0" />
-                <element signature="e#3128#3282#0" />
-                <element signature="e#3306#3324#0" />
-                <element signature="e#3350#4190#0" />
-                <element signature="e#4222#5480#0" />
-                <element signature="e#4270#5480#0" />
-                <element signature="e#8714#8759#0" />
-                <element signature="e#8804#8855#0" />
-                <element signature="e#8040#9189#0" />
-                <element signature="e#8891#9683#0" />
-                <element signature="e#10690#11985#0" />
-                <element signature="e#12412#14699#0" />
-                <element signature="e#14087#14443#0" />
-                <element signature="e#14541#18573#0" />
-                <element signature="e#18612#21251#0" />
-                <element signature="e#20229#20292#0" />
-                <element signature="e#20451#20895#0" />
-                <element signature="e#20914#21003#0" />
-                <element signature="e#23216#23866#0" />
-                <element signature="e#23909#24647#0" />
-                <element signature="e#26822#29319#0" />
-                <element signature="e#29407#29689#0" />
-                <element signature="e#31842#31862#0" />
-                <element signature="e#39011#42424#0" />
-                <element signature="e#39059#39904#0" />
-                <element signature="e#39937#40741#0" />
-                <element signature="e#40777#42424#0" />
-                <element signature="e#42459#43228#0" />
-                <element signature="e#42508#43228#0" />
-                <element signature="e#43263#43369#0" />
-              </folding>
+        <entry file="file://$PROJECT_DIR$/lib/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="15">
+                <caret line="1" selection-start-line="1" selection-end-line="1" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/UATSelenium.py">
+        <entry file="file://$PROJECT_DIR$/UATMain2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="143">
+              <caret line="180" lean-forward="true" selection-start-line="180" selection-end-line="180" />
               <folding>
-                <element signature="e#0#30#0" expanded="true" />
+                <element signature="e#647#1454#0" />
+                <element signature="e#1580#1836#0" />
+                <element signature="e#1873#3033#0" />
+                <element signature="e#3079#3685#0" />
+                <element signature="e#3733#4399#0" />
+                <element signature="e#4439#5030#0" />
+                <element signature="e#5176#5726#0" />
+                <element signature="e#5778#6370#0" />
+                <element signature="e#6412#7289#0" />
+                <element signature="e#7331#8818#0" />
+                <element signature="e#8844#14346#0" />
+                <element signature="e#14368#14843#0" />
+                <element signature="e#14867#15021#0" />
+                <element signature="e#15045#15063#0" />
+                <element signature="e#15089#15929#0" />
+                <element signature="e#15961#17219#0" />
+                <element signature="e#17299#20465#0" />
+                <element signature="e#20515#20560#0" />
+                <element signature="e#20612#20663#0" />
+                <element signature="e#20699#21848#0" />
+                <element signature="e#21884#22761#0" />
+                <element signature="e#22804#23792#0" />
+                <element signature="e#23831#24886#0" />
+                <element signature="e#24932#27167#0" />
+                <element signature="e#27201#27557#0" />
+                <element signature="e#27594#31597#0" />
+                <element signature="e#31636#33820#0" />
+                <element signature="e#33861#37372#0" />
+                <element signature="e#37363#38014#0" />
+                <element signature="e#38057#38795#0" />
+                <element signature="e#38826#38911#0" />
+                <element signature="e#39497#39965#0" />
+                <element signature="e#39569#39792#0" />
+                <element signature="e#39710#39792#0" />
+                <element signature="e#40244#41101#0" />
+                <element signature="e#40359#40603#0" />
+                <element signature="e#41203#41426#0" />
+                <element signature="e#41505#41707#0" />
+                <element signature="e#41815#42043#0" />
+                <element signature="e#42842#57385#0" />
+                <element signature="e#41337#41817#0" />
+                <element signature="e#41965#44465#0" />
+                <element signature="e#42881#43478#0" />
+                <element signature="e#44542#44824#0" />
+                <element signature="e#45355#45394#0" />
+                <element signature="e#47285#50196#0" />
+                <element signature="e#46393#46413#0" />
+                <element signature="e#47842#48233#0" />
+                <element signature="e#48346#48743#0" />
+                <element signature="e#48876#49223#0" />
+                <element signature="e#51856#52195#0" />
+                <element signature="e#52302#52643#0" />
+                <element signature="e#50234#50581#0" />
+                <element signature="e#50700#51165#0" />
+                <element signature="e#51275#51677#0" />
+                <element signature="e#51792#52143#0" />
+                <element signature="e#52253#52594#0" />
+                <element signature="e#52701#53042#0" />
+                <element signature="e#53150#53489#0" />
+                <element signature="e#53592#53931#0" />
+                <element signature="e#56887#57228#0" />
+                <element signature="e#57088#57385#0" />
+                <element signature="e#55612#59022#0" />
+                <element signature="e#55660#56504#0" />
+                <element signature="e#56535#57339#0" />
+                <element signature="e#57375#59022#0" />
+                <element signature="e#59057#59826#0" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/credsManager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-496" />
           </provider>
         </entry>
       </file>
@@ -76,31 +124,41 @@
     <findStrings>
       <find>loadCSV</find>
       <find>Chmod</find>
+      <find>Next</find>
+      <find>self.filepath</find>
+      <find>getIDandPassword</find>
       <find>Enter UserID</find>
+      <find>uat.gif</find>
       <find>Run</find>
+      <find>Parsedcsv</find>
     </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/CSVParser.py" />
-        <option value="$PROJECT_DIR$/UATMain.py" />
+        <option value="$PROJECT_DIR$/../testRepo/README.md" />
         <option value="$PROJECT_DIR$/UATSelenium.py" />
+        <option value="$PROJECT_DIR$/UATMain.py" />
+        <option value="$PROJECT_DIR$/Type1Playbook.py" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/UATMain2.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1563" />
-    <option name="y" value="91" />
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1440" />
-    <option name="height" value="798" />
+    <option name="height" value="900" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -108,14 +166,27 @@
               <item name="UAT" type="b2602c69:ProjectViewProjectNode" />
               <item name="UAT" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="UAT" type="b2602c69:ProjectViewProjectNode" />
+              <item name="UAT" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -129,7 +200,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.UATMain2">
     <configuration name="UATMain" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="UAT" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -142,7 +213,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/UATMain.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/UATMain.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="UATMain2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="UAT" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/UATMain2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -153,6 +245,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.UATMain2" />
         <item itemvalue="Python.UATMain" />
       </list>
     </recent_temporary>
@@ -171,18 +264,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1563" y="91" width="1440" height="798" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2532189" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12017167" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Python Console" order="1" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="3" />
-      <window_info active="true" anchor="bottom" id="Find" order="4" visible="true" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="5" weight="0.3286119" />
+      <window_info anchor="bottom" id="Find" order="4" weight="0.32857144" />
+      <window_info anchor="bottom" id="Run" order="5" visible="true" weight="0.426506" />
       <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
@@ -190,32 +282,81 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Terminal" order="3" visible="true" weight="0.33547926" />
+      <window_info active="true" anchor="right" id="Terminal" order="3" visible="true" weight="0.3104435" />
     </layout>
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/UATMain2.py</url>
+          <line>770</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/UATMain2.py</url>
+          <line>899</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/UATMain2.py</url>
+          <line>761</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/UATMain2.py</url>
+          <line>853</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/UATLogs/UATcreds.csv">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/UATLogs/UATcreds.csv" />
     <entry file="file://$PROJECT_DIR$/NYCT-IAM.ppx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-7" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CSVParser.py">
+    <entry file="file://$PROJECT_DIR$/datButton.py" />
+    <entry file="file://$PROJECT_DIR$/credsManager.py" />
+    <entry file="file://$PROJECT_DIR$/../testRepo/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="15">
+            <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/checked.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Checked.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1455">
-          <caret line="97" selection-start-line="97" selection-end-line="97" />
+        <state relative-caret-position="105">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RSAcheck.py">
+    <entry file="file://$PROJECT_DIR$/lib/CSVParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="603">
+          <caret line="64" selection-start-line="64" selection-end-line="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/PowershellPlaybook.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RSAcheck.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
@@ -224,56 +365,148 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/credsManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-496" />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/lib/unchecked.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/UATMain.py">
+    <entry file="file://$PROJECT_DIR$/lib/UATSelenium.py.orig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/UATSelenium.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1292">
-          <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+        <state relative-caret-position="240">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
           <folding>
-            <element signature="e#2629#3104#0" />
-            <element signature="e#3128#3282#0" />
-            <element signature="e#3306#3324#0" />
-            <element signature="e#3350#4190#0" />
-            <element signature="e#4222#5480#0" />
-            <element signature="e#4270#5480#0" />
-            <element signature="e#8714#8759#0" />
-            <element signature="e#8804#8855#0" />
-            <element signature="e#8040#9189#0" />
-            <element signature="e#8891#9683#0" />
-            <element signature="e#10690#11985#0" />
-            <element signature="e#12412#14699#0" />
-            <element signature="e#14087#14443#0" />
-            <element signature="e#14541#18573#0" />
-            <element signature="e#18612#21251#0" />
-            <element signature="e#20229#20292#0" />
-            <element signature="e#20451#20895#0" />
-            <element signature="e#20914#21003#0" />
-            <element signature="e#23216#23866#0" />
-            <element signature="e#23909#24647#0" />
-            <element signature="e#26822#29319#0" />
-            <element signature="e#29407#29689#0" />
-            <element signature="e#31842#31862#0" />
-            <element signature="e#39011#42424#0" />
-            <element signature="e#39059#39904#0" />
-            <element signature="e#39937#40741#0" />
-            <element signature="e#40777#42424#0" />
-            <element signature="e#42459#43228#0" />
-            <element signature="e#42508#43228#0" />
-            <element signature="e#43263#43369#0" />
+            <element signature="e#0#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/UATSelenium.py">
+    <entry file="file://$PROJECT_DIR$/lib/uat.gif">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Type1Playbook.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="1320">
+          <caret line="276" selection-start-line="276" selection-end-line="276" />
           <folding>
-            <element signature="e#0#30#0" expanded="true" />
+            <element signature="e#0#24#0" expanded="true" />
+            <element signature="e#101#899#0" />
+            <element signature="e#207#899#0" />
+            <element signature="e#927#7597#0" />
+            <element signature="e#1029#1285#0" />
+            <element signature="e#1325#2473#0" />
+            <element signature="e#2522#3116#0" />
+            <element signature="e#3162#3816#0" />
+            <element signature="e#3859#4438#0" />
+            <element signature="e#4587#5167#0" />
+            <element signature="e#5212#6077#0" />
+            <element signature="e#6122#7597#0" />
+            <element signature="e#8028#9779#0" />
+            <element signature="e#8464#8656#0" />
+            <element signature="e#8709#8878#0" />
+            <element signature="e#9832#10412#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/tristate.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/UATMain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="420" column="16" selection-start-line="420" selection-start-column="16" selection-end-line="420" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="15">
+            <caret line="1" selection-start-line="1" selection-end-line="1" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/README.md.orig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UATMain2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="180" lean-forward="true" selection-start-line="180" selection-end-line="180" />
+          <folding>
+            <element signature="e#647#1454#0" />
+            <element signature="e#1580#1836#0" />
+            <element signature="e#1873#3033#0" />
+            <element signature="e#3079#3685#0" />
+            <element signature="e#3733#4399#0" />
+            <element signature="e#4439#5030#0" />
+            <element signature="e#5176#5726#0" />
+            <element signature="e#5778#6370#0" />
+            <element signature="e#6412#7289#0" />
+            <element signature="e#7331#8818#0" />
+            <element signature="e#8844#14346#0" />
+            <element signature="e#14368#14843#0" />
+            <element signature="e#14867#15021#0" />
+            <element signature="e#15045#15063#0" />
+            <element signature="e#15089#15929#0" />
+            <element signature="e#15961#17219#0" />
+            <element signature="e#17299#20465#0" />
+            <element signature="e#20515#20560#0" />
+            <element signature="e#20612#20663#0" />
+            <element signature="e#20699#21848#0" />
+            <element signature="e#21884#22761#0" />
+            <element signature="e#22804#23792#0" />
+            <element signature="e#23831#24886#0" />
+            <element signature="e#24932#27167#0" />
+            <element signature="e#27201#27557#0" />
+            <element signature="e#27594#31597#0" />
+            <element signature="e#31636#33820#0" />
+            <element signature="e#33861#37372#0" />
+            <element signature="e#37363#38014#0" />
+            <element signature="e#38057#38795#0" />
+            <element signature="e#38826#38911#0" />
+            <element signature="e#39497#39965#0" />
+            <element signature="e#39569#39792#0" />
+            <element signature="e#39710#39792#0" />
+            <element signature="e#40244#41101#0" />
+            <element signature="e#40359#40603#0" />
+            <element signature="e#41203#41426#0" />
+            <element signature="e#41505#41707#0" />
+            <element signature="e#41815#42043#0" />
+            <element signature="e#42842#57385#0" />
+            <element signature="e#41337#41817#0" />
+            <element signature="e#41965#44465#0" />
+            <element signature="e#42881#43478#0" />
+            <element signature="e#44542#44824#0" />
+            <element signature="e#45355#45394#0" />
+            <element signature="e#47285#50196#0" />
+            <element signature="e#46393#46413#0" />
+            <element signature="e#47842#48233#0" />
+            <element signature="e#48346#48743#0" />
+            <element signature="e#48876#49223#0" />
+            <element signature="e#51856#52195#0" />
+            <element signature="e#52302#52643#0" />
+            <element signature="e#50234#50581#0" />
+            <element signature="e#50700#51165#0" />
+            <element signature="e#51275#51677#0" />
+            <element signature="e#51792#52143#0" />
+            <element signature="e#52253#52594#0" />
+            <element signature="e#52701#53042#0" />
+            <element signature="e#53150#53489#0" />
+            <element signature="e#53592#53931#0" />
+            <element signature="e#56887#57228#0" />
+            <element signature="e#57088#57385#0" />
+            <element signature="e#55612#59022#0" />
+            <element signature="e#55660#56504#0" />
+            <element signature="e#56535#57339#0" />
+            <element signature="e#57375#59022#0" />
+            <element signature="e#59057#59826#0" />
           </folding>
         </state>
       </provider>

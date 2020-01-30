@@ -1,20 +1,18 @@
 from selenium import webdriver
 from selenium.common.exceptions import *
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import \
     staleness_of
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-from selenium.webdriver.common.keys import Keys
 import time as t
 from subprocess import *
 from contextlib import contextmanager
-from UATMain import MainStart
+from lib.UATMain import MainStart
 
-ms = MainStart()
+
+ms = MainStart(controller='', parent='')
 creds = ms.getIDandPassword()
 
 
@@ -180,9 +178,10 @@ class BrowserSelect:
         # force wait for each page to load
         WebDriverWait(self.browser, 10).until(
             lambda d: d.execute_script(script="return document.readyState") == "complete")
-    
+
         self.browser.find_element_by_xpath("//input[@name='username']").send_keys(creds[0])
         self.browser.find_element_by_xpath("//input[@name='password']").send_keys(creds[1])
+
         self.browser.find_element_by_id("btn_signin").click()
     
         WebDriverWait(self.browser, 10).until(

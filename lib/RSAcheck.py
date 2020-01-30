@@ -1,5 +1,4 @@
-from subprocess import *
-from UATMain import *
+from lib.UATMain import *
 from ansible.plugins.inventory import BaseInventoryPlugin
 
 p1 = MainStart(controller='', parent='')
