@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f461a871-efab-411d-8720-2d6009febe64" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/CSVParser.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Checked.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Checked.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NYCT-IAM.ppx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OLIN-IAM.ppx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PowershellPlaybook.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/PowershellPlaybook.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RSAcheck.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RSAcheck.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Type1Playbook.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Type1Playbook.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UATMain.py" beforeDir="false" afterPath="$PROJECT_DIR$/UATMain2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UATSelenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UATSelenium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/checked.png" beforeDir="false" afterPath="$PROJECT_DIR$/lib/checked.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tristate.png" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tristate.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uat.gif" beforeDir="false" afterPath="$PROJECT_DIR$/lib/uat.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unchecked.png" beforeDir="false" afterPath="$PROJECT_DIR$/lib/unchecked.png" afterDir="false" />
-    </list>
+    <list default="true" id="f461a871-efab-411d-8720-2d6009febe64" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,11 +148,6 @@
               <item name="UAT" type="b2602c69:ProjectViewProjectNode" />
               <item name="UAT" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="UAT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UAT" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -266,7 +243,7 @@
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12017167" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12017167" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" />
@@ -282,7 +259,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Terminal" order="3" visible="true" weight="0.3104435" />
+      <window_info anchor="right" id="Terminal" order="3" visible="true" weight="0.3104435" />
     </layout>
   </component>
   <component name="UnknownFeatures">
