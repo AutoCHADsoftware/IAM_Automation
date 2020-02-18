@@ -14,10 +14,10 @@ While Ansible is being considered as an effective and simple approach to solving
 Solution:
 Empower individuals with the tool necessary to expedite workflows and maximize savings in DevOps cycle time.
 
-This full featured GUI application is intended to be used by Primary Controls in IAM to reduce turn-around time on ID creation, modification, and deletion.
+This fully featured GUI application is intended to be used by Primary Controls in IAM to reduce turn-around time on ID creation, modification, and deletion.
 
 
-The setup is very simple and the only inconvenience, is that it currently run on Mac only, with Proxifier as the software used for switching between SOCKS profiles.
+The setup is very simple and the only inconvenience, is that it currently runs on Mac only, with Proxifier as the software used for switching between SOCKS profiles.
 
 
 Will continue to make modifications to this readme and the software in general, for the duration of my job role.
